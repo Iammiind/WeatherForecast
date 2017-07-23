@@ -22,18 +22,12 @@ export default StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'center'
     },
-    textInputRainy: {
+    textInput: {
         height: 30,
         width: 160,
         borderWidth: 1,
         borderColor: '#607D8B',
-        color: 'white'
-    },
-    textInputSunny: {
-        height: 30,
-        width: 160,
-        borderWidth: 1,
-        borderColor: '#607D8B'
+        backgroundColor: 'white'
     },
     buttonWrapper: {
         flex: 1,

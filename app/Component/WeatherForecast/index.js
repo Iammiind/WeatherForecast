@@ -104,7 +104,7 @@ class WeatherForecast extends Component {
                 <View style={ styles.searchWrapper }>
                     <View style={ styles.inputWrapper }>
                         <View style={ styles.textInputWrapper }>
-                            <TextInput style={ this.state.theme.rainy ? styles.textInputRainy : styles.textInputSunny } 
+                            <TextInput style={ styles.textInput } 
                             onChangeText={ (value) => this._addCity(value) } />
                         </View>
                         <View style={ styles.buttonWrapper }>
