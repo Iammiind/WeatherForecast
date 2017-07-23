@@ -3,13 +3,15 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
     container: {
         flex: 1,
+        width: null,
+        height: null,
+        resizeMode: 'cover',
         flexDirection: 'column'
     },
     searchWrapper: {
-        flex: 1,
+        flex: 1.5,
         flexDirection: 'column',
-        alignItems: 'center',
-        // backgroundColor: 'pink'
+        alignItems: 'center'
     },
     inputWrapper: {
         flex: 1.5,
@@ -20,12 +22,18 @@ export default StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'center'
     },
-    textInput: {
+    textInputRainy: {
+        height: 30,
+        width: 160,
+        borderWidth: 1,
+        borderColor: '#607D8B',
+        color: 'white'
+    },
+    textInputSunny: {
         height: 30,
         width: 160,
         borderWidth: 1,
         borderColor: '#607D8B'
-        // backgroundColor: 'white'
     },
     buttonWrapper: {
         flex: 1,
@@ -71,7 +79,49 @@ export default StyleSheet.create({
         color: 'black'
     },
     listWrapper: {
-        flex: 4,
-        // backgroundColor: 'yellow'
+        flex: 4.2
+    },
+    todayWrapper: {
+        flex: 1,
+        alignItems: 'center'
+    },
+    cityNameSunny: {
+        fontSize: 26,
+        backgroundColor: 'rgba(0,0,0,0)'
+    },
+    descriptionSunny: {
+        backgroundColor: 'rgba(0,0,0,0)'
+    },
+    temperatureSunny: {
+        fontSize: 32,
+        backgroundColor: 'rgba(0,0,0,0)'
+    },
+    cityNameRainy: {
+        fontSize: 26,
+        backgroundColor: 'rgba(0,0,0,0)',
+        color: 'white'
+    },
+    descriptionRainy: {
+        backgroundColor: 'rgba(0,0,0,0)',
+        color: 'white'
+    },
+    temperatureRainy: {
+        fontSize: 32,
+        backgroundColor: 'rgba(0,0,0,0)',
+        color: 'white'
+    },
+    iconWeather: {
+        width: 50, 
+        height: 30
+    },
+    otherDayWrapper: {
+        flex: 2,
+        // backgroundColor: 'green',
+        borderTopWidth: 1,
+        borderColor: '#607D8B'
+    },
+    bgWrapper: {
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

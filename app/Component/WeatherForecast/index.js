@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native'
 import styles from './styles'
 import DayList from './DayList/index'
 
@@ -13,52 +13,52 @@ class WeatherForecast extends Component {
             celcius: true,
             fahrenheit: false
         },
-        weather: [
-            {
-                dt: '',
-                main: {
-                    temp: '',
-                    temp_min: '',
-                    temp_max: '',
-                    pressure: '',
-                    sea_level: '',
-                    grnd_level: '',
-                    humidity: '',
-                    temp_kf: ''
+        forecast: {
+                city: {
+                    id: '--',
+                    name: '--',
+                    coord: {
+                        lat: '--',
+                        lon: '--'
+                    },
+                    country: '--'
                 },
-                weather: {
-                    id: '',
-                    main: '',
-                    description: '',
-                    icon: ''
-                },
-                clouds: {
-                    all: ''
-                },
-                wind: {
-                    speed: '',
-                    deg: ''
-                },
-                rain: {
-                    "3h": ''
-                },
-                snow: {
-                    "3h": ''
-                },
-                dt_txt: ''
-            }
-        ]
+                cod: '--',
+                message: '--',
+                cnt: '--',
+                list: [
+                    {
+                        dt: '--',
+                        temp: {
+                            day: '--',
+                            min: '--',
+                            max: '--',
+                            night: '--',
+                            eve: '--',
+                            morn: '--'
+                        },
+                        pressure: '--',
+                        humidity: '--',
+                        weather: [
+                            {
+                                id: '--',
+                                main: '--',
+                                description: '--',
+                                icon: '--'
+                            }
+                        ]
+                    }
+                ]
+            },
+            theme: {
+                rainy: true,
+                sunny: false
+            }      
     }
 
     _addCity(value) {
         this.setState({
             city: value
-        })
-    }
-
-    _clear() {
-        this.setState({
-            city: ''
         })
     }
 
@@ -69,14 +69,12 @@ class WeatherForecast extends Component {
         else {
             if(this.state.unit.celcius == true) {
                 // celcius unit
-                fetch('http://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + '&appid=' + this.state.appID + '&units=metric')
+                fetch('http://api.openweathermap.org/data/2.5/forecast/daily?q='+ this.state.city +'&appid='+ this.state.appID +'&cnt=5&units=metric')
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    console.log(responseJSON.list)
                     this.setState({
-                        weather: responseJSON.list
+                        forecast: responseJSON
                     })
-                    console.log(this.state.weather)
                 })
                 .catch((error) => {
                     console.warn(error)
@@ -84,15 +82,12 @@ class WeatherForecast extends Component {
             }
             else {
                 // fahrenheit unit
-                fetch('http://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + '&appid=' + this.state.appID + '&units=imperial')
+                fetch('http://api.openweathermap.org/data/2.5/forecast/daily?q='+ this.state.city +'&appid='+ this.state.appID +'&cnt=5&units=imperial')
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    console.log(responseJSON.list)
                     this.setState({
-                        weather: responseJSON.list
+                        forecast: responseJSON
                     })
-                    console.log(this.state.weather)
-                    // console.log('http://openweathermap.org/img/w/'+ this.state.weather.icon +'.png')
                 })
                 .catch((error) => {
                     console.warn(error)
@@ -103,13 +98,14 @@ class WeatherForecast extends Component {
 
     render() {
         return(
-            <View style={ styles.container }>
+            <Image source={ this.state.theme.rainy ? require('../../bg/rainy.jpg') : require('../../bg/sunny.jpg')} style={ styles.container }>
 
                 {/* input part */}
                 <View style={ styles.searchWrapper }>
                     <View style={ styles.inputWrapper }>
                         <View style={ styles.textInputWrapper }>
-                            <TextInput style={ styles.textInput } onChangeText={ (value) => this._addCity(value) } />
+                            <TextInput style={ this.state.theme.rainy ? styles.textInputRainy : styles.textInputSunny } 
+                            onChangeText={ (value) => this._addCity(value) } />
                         </View>
                         <View style={ styles.buttonWrapper }>
                             <TouchableOpacity style={ styles.searchButton } onPress={ () => this._forecast() } >
@@ -144,10 +140,71 @@ class WeatherForecast extends Component {
 
                 {/* list part */}
                 <View style={ styles.listWrapper }>
-                    <DayList />
+                    {/* today weather */}
+                    <View style={ styles.todayWrapper }>
+                        {/* city name */}
+                        <Text style={ this.state.theme.rainy ? styles.cityNameRainy : styles.cityNameSunny }>
+                            { this.state.forecast.city.name }
+                        </Text>
+                        {/* weather description */}
+                        <Text style={ this.state.theme.rainy ? styles.descriptionRainy : styles.descriptionSunny }>
+                            { this.state.forecast.list[0].weather[0].description }
+                        </Text>
+                        {/* weather temperature */}
+                        <Text style={ this.state.theme.rainy ? styles.temperatureRainy : styles.temperatureSunny }>
+                            { this.state.forecast.list[0].temp.day + '°' }
+                        </Text>
+                        {/* weather icon */}
+                        <Image source={{uri: 'http://openweathermap.org/img/w/'+ this.state.forecast.list[0].weather[0].icon +'.png'}} style={ styles.iconWeather } />
+                    </View>
+                    {/* other 4 days weather */}
+                    <View style={ styles.otherDayWrapper }>
+                        {
+                            this.state.forecast.list.slice(1, 5).map( (day) => {
+                                    dateTime = day.dt
+                                    d = new Date(dateTime*1000);
+                                    month = d.getMonth()+1
+                                   
+                                return (
+                                    <DayList date={ d.getDate() +'/'+ month +'/'+ d.getFullYear() } temp={ day.temp.day }  
+                                    description={ day.weather[0].description } icon={ day.weather[0].icon } key={day.dt}
+                                    rainy = { this.state.theme.rainy }
+                                    />
+                                )
+                            } )
+                        }
+                    </View>
                 </View>
 
-            </View>
+                {/* change bg button */}
+                <View style={[ styles.unitWrapper, styles.bgWrapper ]}>
+                        <TouchableOpacity style={[ styles.unitButton, this.state.theme.rainy? styles.unitSelected : styles.unitUnselected ]} 
+                        onPress={ () => this.setState({
+                                theme: {
+                                    rainy: !this.state.theme.rainy,
+                                    sunny: !this.state.theme.sunny
+                                }
+                            })
+                        }>
+                            <Text style={[ styles.textButton, this.state.theme.rainy? styles.textUnitSelected: styles.textUnitUnselected ]}>
+                                Rainy Theme
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[ styles.unitButton, this.state.theme.sunny? styles.unitSelected : styles.unitUnselected ]} 
+                        onPress={ () => this.setState({
+                                theme: {
+                                    rainy: !this.state.theme.rainy,
+                                    sunny: !this.state.theme.sunny
+                                }
+                            }) 
+                        }>
+                            <Text style={[ styles.textButton, this.state.theme.sunny? styles.textUnitSelected: styles.textUnitUnselected ]}>
+                                Sunny Theme
+                            </Text>
+                        </TouchableOpacity>
+                </View>
+
+            </Image>
         )
     }
 }
