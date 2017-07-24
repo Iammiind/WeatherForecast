@@ -11,20 +11,17 @@ export default StyleSheet.create({
     },
     dateWrapper: {
         flex: 2,
-        // backgroundColor: 'orange',
         justifyContent: 'center',
         backgroundColor: 'rgba(0,0,0,0)'
     },
     tempWrapper: {
         flex: 1,
-        // backgroundColor: 'yellow',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0)'
     },
     iconWrapper: {
         flex: 1,
-        // backgroundColor: 'blue',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0)'

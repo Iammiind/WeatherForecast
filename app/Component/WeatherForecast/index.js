@@ -100,7 +100,7 @@ class WeatherForecast extends Component {
         return(
             <Image source={ this.state.theme.rainy ? require('../../bg/rainy.jpg') : require('../../bg/sunny.jpg')} style={ styles.container }>
 
-                {/* input part */}
+                {/* search part */}
                 <View style={ styles.searchWrapper }>
                     <View style={ styles.inputWrapper }>
                         <View style={ styles.textInputWrapper }>
@@ -122,7 +122,7 @@ class WeatherForecast extends Component {
                             }
                         }, () => this._forecast() )}>
                             <Text style={[ styles.textButton, this.state.unit.celcius? styles.textUnitSelected: styles.textUnitUnselected ]}>
-                                Celcius
+                                Celsius
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[ styles.unitButton, this.state.unit.fahrenheit? styles.unitSelected: styles.unitUnselected ]} onPress={ () => this.setState({
@@ -138,7 +138,7 @@ class WeatherForecast extends Component {
                     </View>
                 </View>
 
-                {/* list part */}
+                {/* display weather part */}
                 <View style={ styles.listWrapper }>
                     {/* today weather */}
                     <View style={ styles.todayWrapper }>
@@ -176,7 +176,7 @@ class WeatherForecast extends Component {
                     </View>
                 </View>
 
-                {/* change bg button */}
+                {/* change theme button */}
                 <View style={[ styles.unitWrapper, styles.bgWrapper ]}>
                         <TouchableOpacity style={[ styles.unitButton, this.state.theme.rainy? styles.unitSelected : styles.unitUnselected ]} 
                         onPress={ () => this.setState({
